@@ -32,6 +32,8 @@ jobs:
 
       - name: Build static export
         run: npm run build
+        env:
+          NEXT_PUBLIC_BASE_PATH: /delv.bot
         # next build with output:export writes to ./out
 
       - name: Upload Pages artifact

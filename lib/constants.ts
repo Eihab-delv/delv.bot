@@ -3,9 +3,13 @@
  *
  * Rule: nothing in this app should hard-code a string the user reads on screen.
  * Buttons, nav, headings, copy, even tooltips — they all live here.
- *
- * Rebrand: ayde.bot (Ajdin Brković / MonetizeAd) → delv.bot (Sam Smair / Delv).
  */
+
+// Prefix for static assets — empty locally, /delv.bot on GitHub Pages.
+// next/image with unoptimized:true passes src through as-is, so we must
+// manually prepend basePath to all image paths here.
+const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Brand & person
@@ -29,8 +33,8 @@ export const CEO = {
   email: "sam.smair@delv.com",
   emailHref: "mailto:sam.smair@delv.com",
   location: "Sam Smair · Global",
-  photoUrl: "/sam-profile.png",
-  photoUrl2: "/sam-hero.jpeg",
+  photoUrl: `${BASE}/sam-profile.png`,
+  photoUrl2: `${BASE}/sam-hero.jpeg`,
   bioShort:
     "Founder & CEO of Delv. Building companies, AI teams, and ownership models across 15+ countries.",
   bioLong:
@@ -102,7 +106,7 @@ export const HERO = {
 export const HERO_ASSETS = {
   // Drop a 4:5 portrait render here. Megatron-style war mech, violet glow.
   // Until the file exists, Hero.tsx falls back to the SVG <RobotSilhouette />.
-  robotImage: "/robot-hero.png",
+  robotImage: `${BASE}/robot-hero.png`,
   robotAlt: "Delv AI war machine — autonomous operations",
 } as const;
 
