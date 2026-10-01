@@ -1,8 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
-import { HERO, HERO_ASSETS, CEO, IRIS } from "@/lib/constants";
+import { HERO, CEO, IRIS } from "@/lib/constants";
 import CodeRain from "./CodeRain";
 import HeroRobot from "./HeroRobot";
+import OpenIrisButton from "./OpenIrisButton";
 
 export default function Hero() {
   return (
@@ -42,12 +43,14 @@ export default function Hero() {
               >
                 {HERO.ctaPrimary.label}
               </Link>
-              <Link
+              <a
                 href={HERO.ctaSecondary.href}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center rounded-full glass text-paper px-6 py-3 text-sm font-medium glow-border transition-all"
               >
                 {HERO.ctaSecondary.label}
-              </Link>
+              </a>
             </div>
 
             {/* Stats row */}
@@ -69,15 +72,9 @@ export default function Hero() {
             <div className="absolute top-10 left-1/2 -translate-x-1/2 h-[420px] w-[420px] rounded-full bg-neon-500/20 blur-3xl" />
 
             {/* Robot — center-back. Uses 3D render image if available, falls back to SVG */}
-            <div className="absolute inset-0 flex items-end justify-center animate-float">
-              <HeroRobot
-                src={HERO_ASSETS.robotImage}
-                alt={HERO_ASSETS.robotAlt}
-                className="h-[100%] w-auto"
-              />
-            </div>
+            <HeroRobot className="absolute inset-0 -left-10 -right-6 lg:-right-16" />
 
-            {/* Sam's portrait — glass card, top-left */}
+            {/* Founder portrait — glass card, top-left */}
             <div className="absolute top-4 left-0 sm:left-2 lg:-left-2 w-[230px] glass-violet rounded-2xl p-3 shadow-neon z-20">
               <div className="relative aspect-[4/5] rounded-xl overflow-hidden ring-1 ring-neon-500/20">
                 <Image
@@ -144,15 +141,15 @@ export default function Hero() {
             </div>
 
             {/* Chat with me card — bottom right */}
-            <div className="absolute bottom-4 right-0 sm:right-2 w-[240px] glass-violet rounded-2xl p-4 z-20 shadow-neon">
+            <OpenIrisButton className="absolute bottom-4 right-0 sm:right-2 w-[240px] glass-violet rounded-2xl p-4 z-20 shadow-neon text-left glow-border transition-all">
               <p className="text-sm text-paper leading-snug mb-3">{IRIS.tagline}</p>
-              <div className="flex items-center justify-between">
+              <span className="flex items-center justify-between">
                 <span className="text-xs font-semibold text-neon-300 neon-text">
                   {IRIS.chatPrompt}
                 </span>
-                <span className="text-neon-300 text-lg leading-none">↓</span>
-              </div>
-            </div>
+                <span className="text-neon-300 text-lg leading-none">→</span>
+              </span>
+            </OpenIrisButton>
 
             {/* Bottom badge — Protected by IRIS */}
             <div className="absolute bottom-0 left-1/2 -translate-x-1/2 z-20">

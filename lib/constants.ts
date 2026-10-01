@@ -12,16 +12,40 @@ const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Brand & person
+// Key numbers — change them HERE and every section updates.
+// ─────────────────────────────────────────────────────────────────────────────
+export const STATS = {
+  companies: "20+",
+  people: "1,500+",
+  years: "20+",
+  countries: "15+",
+  cities: "20+",
+  continents: "3", // Europe, North America, Asia (Middle East + Southeast Asia)
+  agentsTotal: "24",
+  agentsDirect: "9",
+  osPlatforms: "3",
+  sinceYear: "2006",
+} as const;
+
+// Site URL used for SEO (canonical links, sitemap, Open Graph). Override with NEXT_PUBLIC_SITE_URL.
+export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://eihab-delv.github.io/delv.bot").replace(/\/$/, "");
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Brand & founder
 // ─────────────────────────────────────────────────────────────────────────────
 export const BRAND = {
-  name: "delv.bot",
-  shortName: "delv",
-  legalName: "Delv",
-  domain: "delv.bot",
-  tagline: "Founder & CEO · Delv",
-  builtBy: "Built with AI. Powered by ownership.",
-  copyright: "© 2026 Sam Smair. All rights reserved.",
+  name: "DELV Group",
+  shortName: "DELV",
+  domain: "delv.group",
+  url: "https://www.delv.group",
+  email: "contact@delv.com",
+  emailHref: "mailto:contact@delv.com",
+  location: "Canberra, Australia",
+  tagline: "Advisory · Development · Deployment · Managed Operations",
+  description:
+    "DELV helps organisations turn AI, software and robotics into secure, governed capability - from strategy and prototyping through deployment and ongoing operation.",
+  builtBy: "Human-centred technology since 2006.",
+  copyright: `© ${new Date().getFullYear()} DELV Group. All rights reserved.`,
 } as const;
 
 export const CEO = {
@@ -32,15 +56,12 @@ export const CEO = {
   title: "Founder & CEO",
   email: "sam.smair@delv.com",
   emailHref: "mailto:sam.smair@delv.com",
-  location: "Sam Smair · Global",
+  location: "Founder & CEO · DELV Group",
   photoUrl: `${BASE}/sam-profile.png`,
   photoUrl2: `${BASE}/sam-hero.jpeg`,
-  bioShort:
-    "Founder & CEO of Delv. Building companies, AI teams, and ownership models across 15+ countries.",
-  bioLong:
-    "Founder & CEO of Delv. Building companies, systems, and AI teams across 15+ countries.",
-  buildingSince: "Building in public since 2007",
-  followers: "6,800+ followers on LinkedIn · Building in public since 2007",
+  // TODO: replace with Sam's real LinkedIn profile URL
+  linkedinUrl: "https://www.linkedin.com",
+  linkedinFollowers: "6,800+",
   quote: "Most people use marketing as a cost centre. I built it as an ownership model.",
 } as const;
 
@@ -49,65 +70,71 @@ export const CEO = {
 // ─────────────────────────────────────────────────────────────────────────────
 export const TOP_BANNER = {
   liveLabel: "Live",
-  text: "projects ongoing · €... today",
-  href: "/reports",
+  text: `${STATS.agentsTotal} AI agents online · ${STATS.companies} companies · ${STATS.countries} countries`,
+  href: "/news-feed",
 } as const;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Navigation
 // ─────────────────────────────────────────────────────────────────────────────
 export const NAV = {
-  brandLabel: "Sam Smair",
+  brandLabel: "DELV",
+  brandSub: "Group",
   links: [
     { label: "Home", href: "/" },
     { label: "About", href: "/about" },
+    { label: "Services", href: "/services" },
     { label: "Team", href: "/team" },
-    { label: "Projects", href: "/projects" },
-    { label: "Reports", href: "/reports" },
-    { label: "Blog", href: "/blog" },
+    { label: "Insights", href: "/insights" },
     { label: "Live Log", href: "/news-feed" },
-    { label: "Companies", href: "/companies" },
+    { label: "Contact", href: "/contact" },
   ],
   languageToggle: { en: "EN", alt: "BA" },
-  subscribeLabel: "Subscribe",
+  ctaLabel: "Talk to DELV",
+  ctaHref: "/contact",
   subscribeHref: "/newsletter",
 } as const;
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Hero
+// Hero (home page — Sam's story; numbers come from STATS so they match DELV)
 // ─────────────────────────────────────────────────────────────────────────────
 export const HERO = {
-  eyebrow: "Founder & CEO · Delv",
+  eyebrow: `${CEO.title} · ${BRAND.name}`,
   headingLine1: "I didn't wait",
   headingLine2: "for permission.",
   headingLine3: "I just built.",
   body: "Everyone keeps asking for the program. The masterclass. The academy. Here's the truth: I don't have time to teach. I'm too busy building. 50 businesses over the coming years, all under one roof. So instead of packaging what I know into slides and selling courses, I built something better: an AI team that runs the operation alongside me. You won't get a course from me. What you'll get is a front-row seat to the entire build. Every decision, every system, every lesson. Live.",
-  socialProof: "6,800+ followers on LinkedIn · Building in public since 2007",
+  socialProof: `${CEO.linkedinFollowers} followers on LinkedIn · Building since ${STATS.sinceYear}`,
   ctaPrimary: { label: "Follow the Journey →", href: "/news-feed" },
-  ctaSecondary: { label: "Read on LinkedIn", href: "https://linkedin.com" },
+  ctaSecondary: { label: "Read on LinkedIn", href: CEO.linkedinUrl },
   stats: [
-    { value: "20+", label: "Companies" },
-    { value: "1,500+", label: "People" },
-    { value: "18", label: "Years" },
-    { value: "15+", label: "Countries" },
+    { value: STATS.companies, label: "Companies" },
+    { value: STATS.people, label: "People" },
+    { value: STATS.years, label: "Years" },
+    { value: STATS.countries, label: "Countries" },
   ],
   shieldStatus: {
-    agentsActive: "9 agents active",
+    agentsActive: `${STATS.agentsTotal} agents active`,
     irisStatus: "IRIS: shielding",
-    companies: "20+ companies",
+    companies: `${STATS.companies} companies`,
     errors: "0 errors",
     protected: "Protected by IRIS",
   },
 } as const;
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Hero assets (image paths separated so they're easy to swap)
+// Home strip under the hero (scrolling DELV Group services)
 // ─────────────────────────────────────────────────────────────────────────────
-export const HERO_ASSETS = {
-  // Drop a 4:5 portrait render here. Megatron-style war mech, violet glow.
-  // Until the file exists, Hero.tsx falls back to the SVG <RobotSilhouette />.
-  robotImage: `${BASE}/robot-hero.png`,
-  robotAlt: "Delv AI war machine — autonomous operations",
+export const ECOSYSTEM = {
+  sectionEyebrow: BRAND.name,
+  items: [
+    { name: "Platform Development", href: "/services/platform-development" },
+    { name: "AI Services", href: "/services/ai-services" },
+    { name: "Robotics", href: "/services/robotics" },
+    { name: "Advisory", href: "/services/advisory" },
+    { name: "48 Hour Prototype", href: "/services/48-hour-prototype" },
+    { name: "Managed Operations", href: "/services" },
+  ],
 } as const;
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -124,28 +151,83 @@ export const IRIS = {
   sendLabel: "Send",
   closeLabel: "Close chat",
   openLabel: "Open IRIS chat",
-  greeting: `Hey! I'm IRIS, ${CEO.firstName}'s Chief of Staff. Ask me anything about Delv or how we're building.`,
+  greeting: `Hey! I'm IRIS, ${CEO.firstName}'s Chief of Staff at DELV. Ask me anything about DELV or how we're building.`,
   thinkingLabel: "IRIS is thinking…",
+  suggestionsLabel: "Try asking",
+  suggestions: ["What does DELV do?", "Tell me about the AI team", "What's the 48 Hour Prototype?", "How do I get in touch?"],
+  // Keyword-matched answers. First topic whose keywords appear in the message wins;
+  // otherwise a cannedResponse is picked at random. (No AI backend yet.)
+  topics: [
+    {
+      keywords: ["48", "prototype", "two days", "2 days"],
+      answer: "The 48 Hour Prototype turns an idea into something tangible in two business days: day 1 is discovery and concept, day 2 we build and hand you a working, shareable prototype plus next steps.",
+      link: { label: "See the 48 Hour Prototype", href: "/services/48-hour-prototype" },
+    },
+    {
+      keywords: ["robot", "humanoid", "quadruped", "wheeled"],
+      answer: "DELV assesses, pilots and deploys humanoid, quadruped and wheeled robots, platform-agnostic, chosen against your requirements. Most clients start with a Robotics Opportunity Assessment.",
+      link: { label: "Robotics", href: "/services/robotics" },
+    },
+    {
+      keywords: ["governance", "policy", "risk", "compliance"],
+      answer: "Governance is built in from day one: AI policy, governance frameworks, usage audits and risk controls. There's also an 8-week AI Readiness Program with a governance framework included.",
+      link: { label: "AI Services", href: "/services/ai-services" },
+    },
+    {
+      keywords: ["ai service", "agentic", "automation", "rag", "private ai", "readiness"],
+      answer: "DELV covers the full AI lifecycle: readiness and advisory, governance, deployment (private AI, agents, RAG) and managed AI operations.",
+      link: { label: "AI Services", href: "/services/ai-services" },
+    },
+    {
+      keywords: ["apps", "an app", "mobile app", "web app", "platform", "saas", "mvp", "software", "portal"],
+      answer: "One team builds apps, SaaS platforms, MVPs, internal tools and customer portals, then keeps running them. Define, design, build, operate: no handover gap.",
+      link: { label: "Platform Development", href: "/services/platform-development" },
+    },
+    {
+      keywords: ["advis", "roadmap", "strategy", "audit", "feasib"],
+      answer: "Advisory clarifies big technology decisions before you invest: audits, roadmaps, architecture, vendor assessments and board briefings. Sometimes the most valuable advice is what not to build.",
+      link: { label: "Advisory", href: "/services/advisory" },
+    },
+    {
+      keywords: ["industr", "government", "sector", "health", "finance", "property", "startup"],
+      answer: "DELV works across government & public sector, enterprise, financial services, property & construction, health & community, and startups & scaleups.",
+      link: { label: "Industries", href: "/services#industries" },
+    },
+    {
+      keywords: ["team", "agents", "iris", "who are you", "employees"],
+      answer: `I lead a team of ${STATS.agentsTotal} AI agents across ${STATS.osPlatforms} OS platforms: ${STATS.agentsDirect} direct agents plus buildOS, ProductionOS and SOVP, working 24/7 alongside the DELV team.`,
+      link: { label: "Meet the team", href: "/team" },
+    },
+    {
+      keywords: ["akademija", "course", "learn", "academy", "training"],
+      answer: "Akademija teaches anyone (not just tech people) how to use AI to save time and cut costs, with practical lessons you can use the same day. Enrollment opens soon.",
+      link: { label: "Akademija", href: "/akademija" },
+    },
+    {
+      keywords: ["contact", "email", "call", "meet", "talk", "reach", "hire", "price", "cost"],
+      answer: "The fastest route is the contact form: a senior DELV team member replies within one business day.",
+      link: { label: "Contact", href: "/contact" },
+    },
+    {
+      keywords: ["newsletter", "subscribe", "weekly", "updates"],
+      answer: "Live Log Weekly lands every Friday: what shipped, what didn't work, and the systems behind it. No fluff.",
+      link: { label: "Subscribe", href: "/newsletter" },
+    },
+    {
+      keywords: ["sam", "founder", "ceo", "smair"],
+      answer: `${CEO.fullName} is DELV's ${CEO.title}. He sets the vision and strategy, and I handle operations so he can focus on key decisions and relationships.`,
+      link: { label: "About DELV", href: "/about" },
+    },
+    {
+      keywords: ["delv", "history", "founded", "story", "what do you do", "what does", "about"],
+      answer: `DELV Group has helped government and enterprise build, deploy and run technology since ${STATS.sinceYear}: platform development, AI services, robotics and advisory. Founded in Canberra, BRW Fast 100 recognised.`,
+      link: { label: "About DELV", href: "/about" },
+    },
+  ] as { keywords: string[]; answer: string; link?: { label: string; href: string } }[],
   cannedResponses: [
-    `That's a great question. ${CEO.firstName} is currently focused on building the next generation of AI-powered ownership models at Delv. Want to know what we're shipping this week?`,
-    `${CEO.firstName} believes in building in public and sharing the journey transparently. Every decision, every lesson, live.`,
-    `IRIS here — I handle operations so ${CEO.firstName} can focus on strategy and building. Ask me anything specific about how we work.`,
-    `We're running multiple companies across different markets right now. Each one designed to solve a real problem with AI in the loop.`,
-  ],
-} as const;
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Ecosystem strip (logo marquee)
-// ─────────────────────────────────────────────────────────────────────────────
-export const ECOSYSTEM = {
-  sectionEyebrow: "The Ecosystem",
-  companies: [
-    { name: "Delv Capital", href: "https://delv.com" },
-    { name: "DelvLead", href: "https://delvlead.com" },
-    { name: "DelvPlug", href: "https://delvplug.com" },
-    { name: "Delv360", href: "https://delv360.com" },
-    { name: "DelvShop", href: "https://delvshop.com" },
-    { name: "DelvSearch", href: "https://delvsearch.com" },
+    "Good question. The quickest way to a precise answer is a short conversation with the DELV team. Want me to point you to the contact form?",
+    "DELV advises, designs, builds, deploys and operates: one partner across the full journey. Ask me about a specific service and I'll go deeper.",
+    "IRIS here. I can tell you about our services, industries, the AI team or the 48 Hour Prototype. What are you working on?",
   ],
 } as const;
 
@@ -161,7 +243,7 @@ export const LIVE_LOG = {
   initState: "Initializing...",
   initSubstate: "0 agents active · 0 OS platforms",
   lastUpdate: "last update: 0 seconds ago",
-  liveState: "24 agents active · 3 OS platforms · 0 errors",
+  liveState: `${STATS.agentsTotal} agents active · ${STATS.osPlatforms} OS platforms · 0 errors`,
   cta: { label: "Enter the Log →", href: "/news-feed" },
 } as const;
 
@@ -171,16 +253,16 @@ export const LIVE_LOG = {
 export const TEAM = {
   eyebrow: "The Team",
   heading: "I didn't build this alone.",
-  body: "I don't have a team of employees. I have a team of AI agents: each one built for a specific job, trained on how I think, and running 24/7 while I'm focused on the next deal. This is how one person runs what should take fifty.",
+  body: "Alongside the DELV team, I run a team of AI agents: each one built for a specific job, trained on how I think, and running 24/7 while I'm focused on the next deal. This is how a small team runs what should take fifty.",
   cta: { label: "Meet the team →", href: "/team" },
-  summaryHeading: "24 AI agents. 3 OS platforms. Running 24/7.",
+  summaryHeading: `${STATS.agentsTotal} AI agents. ${STATS.osPlatforms} OS platforms. Running 24/7.`,
   summaryBody:
-    "9 direct agents (IRIS, AXIS, REEL, VOICE, NOVA, COPY, Aria, Spark, Rex) + 15 OS agents across buildOS (7 dev agents), ProductionOS (VEGA, QUILL, LENS, INK), and SOVP (PULSE, REMIX, GATE, HYPE). All led by IRIS: Chief of Staff.",
+    `${STATS.agentsDirect} direct agents (IRIS, AXIS, REEL, VOICE, NOVA, COPY, Aria, Spark, Rex) + 15 OS agents across buildOS (7 dev agents), ProductionOS (VEGA, QUILL, LENS, INK), and SOVP (PULSE, REMIX, GATE, HYPE). All led by IRIS: Chief of Staff.`,
   stats: [
-    { value: "24", label: "Agents" },
-    { value: "3", label: "OS" },
+    { value: STATS.agentsTotal, label: "Agents" },
+    { value: STATS.osPlatforms, label: "OS" },
     { value: "24/7", label: "Online" },
-    { value: "0", label: "Employees" },
+    { value: "1", label: "Chief of Staff" },
   ],
   agents: [
     { initial: "I", name: "IRIS", role: "Chief of Staff" },
@@ -191,6 +273,33 @@ export const TEAM = {
     { initial: "C", name: "COPY", role: "Copywriter" },
   ],
   moreAgentsBadge: "+18",
+  // Full roster for the /team page. Only add a role once it's confirmed.
+  roster: [
+    {
+      group: "Direct agents",
+      agents: [
+        { name: "IRIS", role: "Chief of Staff" },
+        { name: "AXIS", role: "Content Writer" },
+        { name: "REEL", role: "Video Producer" },
+        { name: "VOICE", role: "Audio & Voice" },
+        { name: "NOVA", role: "Visual Identity" },
+        { name: "COPY", role: "Copywriter" },
+        { name: "Aria" },
+        { name: "Spark" },
+        { name: "Rex" },
+      ],
+    },
+    { group: "buildOS", note: "7 dev agents", agents: [] },
+    {
+      group: "ProductionOS",
+      agents: [{ name: "VEGA" }, { name: "QUILL" }, { name: "LENS" }, { name: "INK" }],
+    },
+    {
+      group: "SOVP",
+      agents: [{ name: "PULSE" }, { name: "REMIX" }, { name: "GATE" }, { name: "HYPE" }],
+    },
+  ] as { group: string; note?: string; agents: { name: string; role?: string }[] }[],
+  roleTbd: "Role coming soon",
 } as const;
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -199,7 +308,7 @@ export const TEAM = {
 export const PROTOCOL = {
   eyebrow: "How it works",
   heading: "The IRIS Protocol",
-  subheading: `The unique relationship between ${CEO.firstName} and IRIS: how autonomous AI coordinates 20+ companies while keeping humans in control of what matters.`,
+  subheading: `The unique relationship between ${CEO.firstName} and IRIS: how autonomous AI coordinates ${STATS.companies} companies while keeping humans in control of what matters.`,
   iris: {
     role: "Chief of Staff",
     name: "IRIS",
@@ -266,26 +375,26 @@ export const PROTOCOL = {
   connectionMap: {
     title: "Live Connection Map",
     hubLabel: "IRIS",
-    spokes: ["Delv Capital", "DelvLead", "DelvPlug", "Delv360", "DelvShop", "DelvSearch"],
+    spokes: ["Platform Development", "AI Services", "Robotics", "Advisory", "48 Hour Prototype"],
     caption: `All communication and task creation flows through IRIS. Problems are identified, optimizations are suggested, and ${CEO.firstName} stays in control through a single command center.`,
   },
 } as const;
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Ecosystem / global presence
+// Global presence
 // ─────────────────────────────────────────────────────────────────────────────
 export const PRESENCE = {
   eyebrow: "Presence",
   heading: "The Ecosystem",
-  body: "20+ companies. 15+ countries. Built from the ground up. Operating globally across Europe, North America, Middle East, and Southeast Asia.",
+  body: `${STATS.companies} companies. ${STATS.countries} countries. Built from the ground up. Operating globally across Europe, North America, Middle East, and Southeast Asia.`,
   legend: { office: "Office", remote: "Remote / Partners" },
   stats: [
-    { value: "15+", label: "Countries" },
-    { value: "20+", label: "Cities" },
-    { value: "20+", label: "Companies" },
-    { value: "4", label: "Continents" },
+    { value: STATS.countries, label: "Countries" },
+    { value: STATS.cities, label: "Cities" },
+    { value: STATS.companies, label: "Companies" },
+    { value: STATS.continents, label: "Continents" },
   ],
-  footnote: "Building in public since 2007 · 15 countries · 1,500+ people impacted",
+  footnote: `Building since ${STATS.sinceYear} · ${STATS.countries} countries · ${STATS.people} people impacted`,
 } as const;
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -320,7 +429,7 @@ export const AKADEMIJA = {
       body: "The world is changing fast. People who learn AI now will have a serious edge over those who wait.",
     },
   ],
-  cta: { label: "Join Akademija →", href: "/akademija?ref=homepage" },
+  cta: { label: "Join Akademija →", href: "/akademija" },
   ctaNote: "Get notified when enrollment opens",
 } as const;
 
@@ -342,50 +451,49 @@ export const NEWSLETTER = {
 } as const;
 
 // ─────────────────────────────────────────────────────────────────────────────
-// About snippet (homepage)
+// About snippet (home + about page founder section — Sam's voice)
 // ─────────────────────────────────────────────────────────────────────────────
 export const ABOUT_SNIPPET = {
   eyebrow: "About",
   heading: "Built from nothing.",
   headingHighlight: "Owned from day one.",
   paragraphs: [
-    "For 18 years, I've operated at the intersection of performance marketing, lead generation, and business scaling: starting from early affiliate arbitrage and evolving into running a network of 20+ companies across marketing, SaaS, real estate, and e-commerce.",
-    "Today, the Delv ecosystem runs 20+ companies with 1,500+ people. Operating globally across 15+ countries and 3 continents. No VC funding, no Silicon Valley network: just a clear view of how marketing actually works when you treat it as an ownership model.",
-    "Instead of packaging what I know into courses, I built an AI team of 9 agents that runs the operation alongside me: handling everything I can't get to. You won't find a course here. What you'll find is a front-row seat to the entire build, live.",
+    `For ${STATS.years} years, I've operated at the intersection of technology, performance marketing, lead generation, and business scaling: evolving into running a network of ${STATS.companies} companies across technology, marketing, SaaS, real estate, and e-commerce.`,
+    `Today, the ${BRAND.name} ecosystem runs ${STATS.companies} companies with ${STATS.people} people. Operating globally across ${STATS.countries} countries and ${STATS.continents} continents. No VC funding, no Silicon Valley network: just a clear view of how technology and marketing actually work when you treat them as an ownership model.`,
+    `Instead of packaging what I know into courses, I built an AI team of ${STATS.agentsTotal} agents, led by IRIS, that runs the operation alongside me and the DELV team: handling everything I can't get to. What you'll find here is a front-row seat to the entire build, live.`,
   ],
-  attribution: `- ${CEO.firstName} ${CEO.lastName}`,
+  attribution: `- ${CEO.fullName}, ${CEO.title}`,
 } as const;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Footer
 // ─────────────────────────────────────────────────────────────────────────────
 export const FOOTER = {
-  brand: CEO.fullName,
-  brandSub: "Founder & CEO of Delv. Building companies, systems, and AI teams across 15+ countries.",
-  brandSince: "Building in public since 2007",
+  brand: BRAND.name,
+  brandSub: BRAND.description,
+  brandSince: `Founded ${STATS.sinceYear} · ${BRAND.location}`,
   columns: [
     {
-      heading: "Navigate",
+      heading: "Company",
       links: [
+        { label: "About", href: "/about" },
         { label: "Team", href: "/team" },
-        { label: "Projects", href: "/projects" },
-        { label: "Blog", href: "/blog" },
+        { label: "Insights", href: "/insights" },
         { label: "Live Log", href: "/news-feed" },
-        { label: "Companies", href: "/companies" },
+        { label: "Akademija", href: "/akademija" },
         { label: "Newsletter", href: "/newsletter" },
+        { label: "Contact", href: "/contact" },
       ],
     },
     {
-      heading: "The Ecosystem",
+      heading: "Services",
       links: [
-        { label: "Delv Capital", href: "/companies/delv-capital" },
-        { label: "DelvSearch", href: "/companies/delvsearch" },
-        { label: "DelvLead", href: "/companies/delvlead" },
-        { label: "DelvPlug", href: "/companies/delvplug" },
-        { label: "Delv360", href: "/companies/delv360" },
-        { label: "DelvShop", href: "/companies/delvshop" },
-        { label: "DelvFinity", href: "/companies/delvfinity" },
-        { label: "DelvCrew", href: "/companies/delvcrew" },
+        { label: "Platform Development", href: "/services/platform-development" },
+        { label: "AI Services", href: "/services/ai-services" },
+        { label: "Robotics", href: "/services/robotics" },
+        { label: "Advisory", href: "/services/advisory" },
+        { label: "48 Hour Prototype", href: "/services/48-hour-prototype" },
+        { label: "Industries", href: "/services#industries" },
       ],
     },
   ],
@@ -399,8 +507,103 @@ export const FOOTER = {
 // SEO / page metadata
 // ─────────────────────────────────────────────────────────────────────────────
 export const META = {
-  title: `${CEO.fullName} | ${CEO.title}`,
-  description: `${CEO.title} of Delv. Building companies, AI teams, and ownership models across 15+ countries.`,
-  ogTitle: `${CEO.fullName} | ${CEO.title}`,
-  ogDescription: `${CEO.title} of Delv. Building companies, AI teams, and ownership models across 15+ countries.`,
+  title: `${BRAND.name} | AI, Platforms, Robotics & Advisory`,
+  titleTemplate: `%s | ${BRAND.name}`,
+  description: BRAND.description,
+  ogTitle: `${BRAND.name} | AI is already changing your organisation. We make it operational.`,
+  ogDescription: BRAND.description,
+  // 1200×630 social preview (DELV Group's own share image)
+  ogImage: `${BASE}/delv-group/og.jpg`,
+} as const;
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Inner pages
+// ─────────────────────────────────────────────────────────────────────────────
+export const PAGES = {
+  about: {
+    title: "About",
+    founderEyebrow: "Leadership",
+  },
+  team: {
+    title: "Team",
+    eyebrow: "The Team",
+    heading: "Meet the agents.",
+    body: `${STATS.agentsTotal} AI agents across ${STATS.osPlatforms} OS platforms, all coordinated by IRIS.`,
+  },
+  services: {
+    title: "Services",
+    eyebrow: "Services",
+    heading: "One team across the full lifecycle.",
+    body: "Platforms, AI, robotics and advisory: delivered end to end, from the first prototype to managed operations.",
+    capabilitiesEyebrow: "Four pillars",
+    capabilitiesHeading: "Engage one service, or the whole journey.",
+    capabilitiesBody: "Each pillar can be engaged on its own, or as part of an end-to-end program.",
+    offersEyebrow: "Entry-point offers",
+    offersHeading: "Structured engagements designed for clarity.",
+    offersBody: "Each offer is time-boxed, deliverable-driven and designed to inform a bigger decision.",
+    industriesEyebrow: "Industries",
+    industriesHeading: "We've worked in your environment before.",
+    industriesBody: "Government, enterprise, regulated sectors. We understand the constraints (procurement, security, compliance) and we deliver within them.",
+    exploreLabel: "Explore →",
+    offerLabel: "Offer",
+    sectorLabel: "Sector",
+    backLabel: "← All services",
+    howWeWork: "How we work",
+    processHeading: "How an engagement works.",
+    ctaHeading: "Start somewhere. We'll take you the rest of the way.",
+    ctaBody: "Engage one service or the full lifecycle — DELV scales to where you are and where you need to get to.",
+    ctaLabel: "Contact us →",
+    startHere: "Sound familiar?",
+    ctaHref: "/contact",
+  },
+  insights: {
+    title: "Insights",
+    eyebrow: "Insights",
+    heading: "Practical thinking from real delivery.",
+    body: "AI governance, agents, robotics, platforms and advisory: what we've learned building and running technology for twenty years.",
+    allTopics: "All topics",
+    featuredLabel: "Featured",
+    soonLabel: "Coming soon",
+    footerHeading: "The thinking and the doing are the same team.",
+    footerBody: "Every piece of thinking here is backed by twenty years of delivery. Get new articles first in Live Log Weekly.",
+  },
+  newsFeed: {
+    title: "Live Log",
+    archiveEyebrow: "From the archive",
+    archiveHeading: "How we got here.",
+    archiveBody: "Twenty years of DELV, one chapter at a time. Each capability still powers the work today.",
+    emptyHeading: "Live entries are coming.",
+    emptyBody: "Every win, fail and lesson will be posted here as it happens.",
+  },
+  contact: {
+    title: "Contact",
+    eyebrow: "Get in touch",
+    heading: "Start a conversation.",
+    body: "Tell us what you're working on. A senior DELV team member responds within one business day.",
+    firstName: "First name",
+    lastName: "Last name",
+    email: "Work email",
+    organisation: "Organisation",
+    topic: "What are you interested in?",
+    topicPlaceholder: "Select an option",
+    message: "Tell us what you are working on",
+    submit: "Send message →",
+    sentHeading: "Your email app should now be open.",
+    sentBody: "Send the drafted email and we'll be in touch within one business day. Nothing opened? Email us directly:",
+    directHeading: "Prefer email?",
+    founderLabel: CEO.title,
+    companyLabel: BRAND.name,
+    subjectPrefix: "Enquiry",
+  },
+  akademija: { title: "Akademija" },
+  newsletter: { title: "Newsletter" },
+  notFound: {
+    title: "Page not found",
+    eyebrow: "404",
+    heading: "Nothing here yet.",
+    body: "This page doesn't exist, or it hasn't been built yet.",
+    cta: { label: "Back to home", href: "/" },
+  },
+  comingSoonCta: { label: "Subscribe to Live Log Weekly →", href: "/newsletter" },
+  skipToContent: "Skip to content",
 } as const;

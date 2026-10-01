@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { FOOTER, CEO } from "@/lib/constants";
+import { FOOTER, BRAND, NAV } from "@/lib/constants";
 
 export default function Footer() {
   return (
@@ -7,13 +7,13 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-12 gap-10 mb-12">
           <div className="lg:col-span-5">
-            <p className="text-xl font-semibold text-paper mb-2">{FOOTER.brand}</p>
+            <p className="text-xl font-bold tracking-[0.15em] text-paper mb-2">{FOOTER.brand}</p>
             <p className="text-sm text-paper-dim mb-3 max-w-md">{FOOTER.brandSub}</p>
             <p className="text-xs text-paper-dim/70">{FOOTER.brandSince}</p>
             <p className="text-xs text-paper-dim mt-3">
-              <Link href={CEO.emailHref} className="hover:text-neon-300 transition-colors">
-                {CEO.email}
-              </Link>
+              <a href={BRAND.emailHref} className="hover:text-neon-300 transition-colors">
+                {BRAND.email}
+              </a>
             </p>
           </div>
 
@@ -46,7 +46,7 @@ export default function Footer() {
           <div className="text-xs text-paper-dim flex flex-wrap items-center gap-3">
             <span>{FOOTER.newsletterTeaser}</span>
             <Link
-              href="/newsletter"
+              href={NAV.subscribeHref}
               className="rounded-full bg-neon-500 text-ink px-4 py-1.5 font-semibold hover:bg-neon-400 transition-all shadow-neon-sm"
             >
               {FOOTER.newsletterCta}

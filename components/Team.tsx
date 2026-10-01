@@ -1,7 +1,13 @@
 import Link from "next/link";
 import { TEAM } from "@/lib/constants";
 
-export default function Team() {
+export default function Team({
+  showCta = true,
+  showAgents = true,
+}: {
+  showCta?: boolean;
+  showAgents?: boolean;
+}) {
   return (
     <section className="relative py-20 lg:py-28 bg-ink-soft border-y border-ink-line">
       <div className="absolute inset-0 bg-radial-violet-bl opacity-50" />
@@ -15,15 +21,18 @@ export default function Team() {
               {TEAM.heading}
             </h2>
             <p className="text-paper-dim leading-relaxed mb-6">{TEAM.body}</p>
+            {showCta && (
             <Link
               href={TEAM.cta.href}
               className="inline-flex items-center text-sm text-neon-300 font-semibold hover:text-neon-400 transition-colors"
             >
               {TEAM.cta.label}
             </Link>
+            )}
           </div>
 
           <div className="lg:col-span-7">
+            {showAgents && (
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
               {TEAM.agents.map((a) => (
                 <div
@@ -41,8 +50,9 @@ export default function Team() {
                 {TEAM.moreAgentsBadge}
               </div>
             </div>
+            )}
 
-            <div className="mt-8 rounded-2xl glass-violet p-6 shadow-neon-sm">
+            <div className={`${showAgents ? "mt-8" : ""} rounded-2xl glass-violet p-6 shadow-neon-sm`}>
               <h3 className="text-lg font-semibold text-paper mb-2">
                 {TEAM.summaryHeading}
               </h3>

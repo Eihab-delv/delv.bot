@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { AKADEMIJA } from "@/lib/constants";
 
-export default function Akademija() {
+export default function Akademija({ showCta = true }: { showCta?: boolean }) {
   return (
     <section className="relative py-20 lg:py-28 bg-ink">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -26,6 +26,7 @@ export default function Akademija() {
           ))}
         </div>
 
+        {showCta && (
         <div className="flex flex-wrap items-center gap-4">
           <Link
             href={AKADEMIJA.cta.href}
@@ -35,6 +36,7 @@ export default function Akademija() {
           </Link>
           <span className="text-sm text-paper-dim">{AKADEMIJA.ctaNote}</span>
         </div>
+        )}
       </div>
     </section>
   );

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ECOSYSTEM } from "@/lib/constants";
 
 export default function EcosystemMarquee() {
-  const items = [...ECOSYSTEM.companies, ...ECOSYSTEM.companies];
+  const items = [...ECOSYSTEM.items, ...ECOSYSTEM.items];
 
   return (
     <section className="relative border-y border-ink-line bg-ink-soft py-10 overflow-hidden">
@@ -13,11 +13,13 @@ export default function EcosystemMarquee() {
         </p>
       </div>
       <div className="relative mask-fade-x">
-        <div className="flex gap-12 animate-marquee whitespace-nowrap">
+        <div className="flex gap-12 animate-marquee whitespace-nowrap w-max">
           {items.map((c, i) => (
             <Link
               key={`${c.name}-${i}`}
               href={c.href}
+              aria-hidden={i >= ECOSYSTEM.items.length ? true : undefined}
+              tabIndex={i >= ECOSYSTEM.items.length ? -1 : undefined}
               className="text-xl font-semibold text-paper-dim hover:text-neon-300 transition-colors tracking-tight"
             >
               {c.name}

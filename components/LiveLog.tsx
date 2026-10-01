@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { LIVE_LOG } from "@/lib/constants";
 
-export default function LiveLog() {
+export default function LiveLog({ showCta = true }: { showCta?: boolean }) {
   return (
     <section className="relative py-20 lg:py-28 bg-ink">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -38,6 +38,7 @@ export default function LiveLog() {
           </div>
         </div>
 
+        {showCta && (
         <div className="mt-6">
           <Link
             href={LIVE_LOG.cta.href}
@@ -46,6 +47,7 @@ export default function LiveLog() {
             {LIVE_LOG.cta.label}
           </Link>
         </div>
+        )}
       </div>
     </section>
   );

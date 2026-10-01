@@ -1,10 +1,28 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
+import Link from "next/link";
 import { Send, X } from "lucide-react";
 import { IRIS } from "@/lib/constants";
 
-type Message = { id: number; sender: "IRIS" | "You"; text: string };
+type Message = {
+  id: number;
+  sender: "IRIS" | "You";
+  text: string;
+  link?: { label: string; href: string };
+};
+
+/** Fire this from anywhere (e.g. the hero card) to open the chat. */
+export const IRIS_OPEN_EVENT = "iris:open";
+
+function replyTo(text: string): Pick<Message, "text" | "link"> {
+  const q = text.toLowerCase();
+  const topic = IRIS.topics.find((t) => t.keywords.some((k) => q.includes(k)));
+  if (topic) return { text: topic.answer, link: topic.link };
+  return {
+    text: IRIS.cannedResponses[Math.floor(Math.random() * IRIS.cannedResponses.length)],
+  };
+}
 
 export default function IrisChat() {
   const [open, setOpen] = useState(false);
@@ -14,6 +32,8 @@ export default function IrisChat() {
   const [input, setInput] = useState("");
   const [thinking, setThinking] = useState(false);
   const scrollerRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const launcherRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     scrollerRef.current?.scrollTo({
@@ -22,21 +42,38 @@ export default function IrisChat() {
     });
   }, [messages, thinking]);
 
-  const send = (e: React.FormEvent) => {
-    e.preventDefault();
-    const text = input.trim();
-    if (!text) return;
+  // Open from external triggers
+  useEffect(() => {
+    const onOpen = () => setOpen(true);
+    window.addEventListener(IRIS_OPEN_EVENT, onOpen);
+    return () => window.removeEventListener(IRIS_OPEN_EVENT, onOpen);
+  }, []);
 
+  // Focus the input on open, close on Escape
+  useEffect(() => {
+    if (!open) return;
+    inputRef.current?.focus();
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
+
+  const ask = useCallback((raw: string) => {
+    const text = raw.trim();
+    if (!text) return;
     setMessages((m) => [...m, { id: m.length + 1, sender: "You", text }]);
     setInput("");
     setThinking(true);
-
     setTimeout(() => {
-      const reply =
-        IRIS.cannedResponses[Math.floor(Math.random() * IRIS.cannedResponses.length)];
-      setMessages((m) => [...m, { id: m.length + 1, sender: "IRIS", text: reply }]);
+      const reply = replyTo(text);
+      setMessages((m) => [...m, { id: m.length + 1, sender: "IRIS", ...reply }]);
       setThinking(false);
-    }, 900);
+    }, 700);
+  }, []);
+
+  const close = () => {
+    setOpen(false);
+    requestAnimationFrame(() => launcherRef.current?.focus());
   };
 
   return (
@@ -44,6 +81,7 @@ export default function IrisChat() {
       {/* Floating launcher */}
       {!open && (
         <button
+          ref={launcherRef}
           type="button"
           onClick={() => setOpen(true)}
           aria-label={IRIS.openLabel}
@@ -55,7 +93,11 @@ export default function IrisChat() {
 
       {/* Panel */}
       {open && (
-        <div className="fixed bottom-6 right-6 z-50 w-[calc(100vw-3rem)] sm:w-96 max-h-[80vh] rounded-2xl glass-violet shadow-neon-lg flex flex-col overflow-hidden">
+        <div
+          role="dialog"
+          aria-label={`${IRIS.name} chat`}
+          className="fixed bottom-6 right-6 z-50 w-[calc(100vw-3rem)] sm:w-96 max-h-[80vh] rounded-2xl glass-violet shadow-neon-lg flex flex-col overflow-hidden animate-slide-up"
+        >
           {/* Header */}
           <div className="bg-gradient-to-br from-neon-500/30 to-neon-700/20 px-4 py-3 flex items-start gap-3 border-b border-neon-500/20">
             <div className="h-10 w-10 rounded-full bg-gradient-to-br from-neon-400 to-neon-700 text-ink flex items-center justify-center font-bold shrink-0 shadow-[0_0_18px_rgba(168,85,247,0.6)]">
@@ -72,7 +114,7 @@ export default function IrisChat() {
             </div>
             <button
               type="button"
-              onClick={() => setOpen(false)}
+              onClick={close}
               aria-label={IRIS.closeLabel}
               className="text-paper-dim hover:text-paper"
             >
@@ -87,6 +129,7 @@ export default function IrisChat() {
           {/* Messages */}
           <div
             ref={scrollerRef}
+            aria-live="polite"
             className="flex-1 overflow-y-auto px-4 py-4 space-y-3 bg-ink/60"
           >
             {messages.map((m) => (
@@ -102,6 +145,15 @@ export default function IrisChat() {
                   }`}
                 >
                   {m.text}
+                  {m.link && (
+                    <Link
+                      href={m.link.href}
+                      onClick={() => setOpen(false)}
+                      className="mt-2 block text-xs font-semibold text-neon-300 hover:text-neon-400"
+                    >
+                      {m.link.label} →
+                    </Link>
+                  )}
                 </div>
               </div>
             ))}
@@ -112,18 +164,42 @@ export default function IrisChat() {
                 </div>
               </div>
             )}
+            {messages.length === 1 && !thinking && (
+              <div className="pt-1">
+                <p className="text-[10px] uppercase tracking-[0.2em] text-paper-dim mb-2">
+                  {IRIS.suggestionsLabel}
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {IRIS.suggestions.map((s) => (
+                    <button
+                      key={s}
+                      type="button"
+                      onClick={() => ask(s)}
+                      className="rounded-full border border-neon-500/30 bg-neon-500/10 px-3 py-1.5 text-xs text-neon-300 hover:bg-neon-500/20 transition-colors"
+                    >
+                      {s}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Input */}
           <form
-            onSubmit={send}
+            onSubmit={(e) => {
+              e.preventDefault();
+              ask(input);
+            }}
             className="border-t border-ink-line px-3 py-3 flex items-center gap-2 bg-ink-soft"
           >
             <input
+              ref={inputRef}
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder={IRIS.inputPlaceholder}
+              aria-label={IRIS.inputPlaceholder}
               className="flex-1 rounded-full glass text-paper placeholder:text-paper-dim/60 px-4 py-2 text-sm focus:outline-none focus:border-neon-500"
             />
             <button
