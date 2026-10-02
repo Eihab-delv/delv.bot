@@ -1,4 +1,5 @@
-import { PROTOCOL } from "@/lib/constants";
+import { getContent } from "@/lib/content";
+import type { Lang } from "@/lib/site";
 
 function renderBoldedBullet(text: string) {
   const parts = text.split(/(\*\*[^*]+\*\*)/g);
@@ -14,7 +15,8 @@ function renderBoldedBullet(text: string) {
   });
 }
 
-export default function Protocol() {
+export default function Protocol({ lang }: { lang: Lang }) {
+  const PROTOCOL = getContent(lang).protocol;
   return (
     <section className="relative py-20 lg:py-28 bg-ink">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -46,7 +48,7 @@ export default function Protocol() {
                 </p>
                 <h3 className="text-3xl font-semibold mb-6 text-paper">
                   {card.name}
-                  <span className="ml-2 text-base font-normal text-paper-dim/70">
+                  <span className="ms-2 text-base font-normal text-paper-dim/70">
                     {card.typeLabel}
                   </span>
                 </h3>
@@ -93,7 +95,7 @@ export default function Protocol() {
             <div className="rounded-full bg-neon-500 text-ink px-5 py-3 font-bold shadow-[0_0_24px_rgba(168,85,247,0.6)]">
               {PROTOCOL.connectionMap.hubLabel}
             </div>
-            <div className="text-neon-400 text-xl">→</div>
+            <div className="text-neon-400 text-xl rtl:-scale-x-100">→</div>
             <div className="flex flex-wrap gap-2 justify-center">
               {PROTOCOL.connectionMap.spokes.map((s) => (
                 <span

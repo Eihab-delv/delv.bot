@@ -179,3 +179,26 @@ html {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ── Nashmi robot illustration ─────────────────────────────────────────── */
+@keyframes nb-blink { 0%, 92%, 100% { transform: scaleY(1); } 95% { transform: scaleY(0.1); } }
+@keyframes nb-wave { 0%, 100% { transform: rotate(0deg); } 25% { transform: rotate(-10deg); } 75% { transform: rotate(8deg); } }
+@keyframes nb-pulse { 0%, 100% { opacity: 0.55; } 50% { opacity: 1; } }
+@keyframes nb-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+.nb-blink { animation: nb-blink 4.5s ease-in-out infinite; transform-box: view-box; }
+.nb-wave { animation: nb-wave 2.6s ease-in-out infinite; transform-box: view-box; }
+.nb-pulse { animation: nb-pulse 2.4s ease-in-out infinite; }
+.nb-float { animation: nb-float 4s ease-in-out infinite; }
+
+/* ── Arabic / right-to-left ────────────────────────────────────────────── */
+html[lang="ar"] body {
+  font-family: "IBM Plex Sans Arabic", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Tahoma, sans-serif;
+}
+/* Letter-spacing breaks Arabic letter joining */
+html[lang="ar"] [class*="tracking-"] {
+  letter-spacing: 0 !important;
+}
+html[lang="ar"] .display-heading {
+  letter-spacing: 0;
+  line-height: 1.25;
+}

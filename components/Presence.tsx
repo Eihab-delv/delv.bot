@@ -1,6 +1,8 @@
-import { PRESENCE } from "@/lib/constants";
+import { getContent } from "@/lib/content";
+import type { Lang } from "@/lib/site";
 
-export default function Presence() {
+export default function Presence({ lang }: { lang: Lang }) {
+  const PRESENCE = getContent(lang).presence;
   return (
     <section className="relative py-20 lg:py-28 bg-ink-soft border-y border-ink-line">
       <div className="absolute inset-0 bg-radial-violet opacity-40" />
@@ -42,7 +44,7 @@ export default function Presence() {
                 );
               })}
             </svg>
-            <div className="absolute bottom-4 left-4 inline-flex gap-4 text-xs text-paper-dim glass rounded-full px-4 py-2">
+            <div className="absolute bottom-4 start-4 inline-flex gap-4 text-xs text-paper-dim glass rounded-full px-4 py-2">
               <span className="inline-flex items-center gap-2">
                 <span className="h-2 w-2 rounded-full bg-neon-500 shadow-[0_0_8px_rgba(168,85,247,0.6)]" />
                 {PRESENCE.legend.office}
@@ -58,7 +60,7 @@ export default function Presence() {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           {PRESENCE.stats.map((s) => (
             <div key={s.label} className="rounded-xl glass p-5">
-              <div className="text-3xl font-semibold text-paper">{s.value}</div>
+              <div className="text-3xl font-semibold text-paper"><bdi dir="ltr">{s.value}</bdi></div>
               <div className="text-xs uppercase tracking-wider text-paper-dim mt-1">
                 {s.label}
               </div>

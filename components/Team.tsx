@@ -1,13 +1,17 @@
 import Link from "next/link";
-import { TEAM } from "@/lib/constants";
+import { getContent } from "@/lib/content";
+import { localize, type Lang } from "@/lib/site";
 
 export default function Team({
+  lang,
   showCta = true,
   showAgents = true,
 }: {
+  lang: Lang;
   showCta?: boolean;
   showAgents?: boolean;
 }) {
+  const TEAM = getContent(lang).team;
   return (
     <section className="relative py-20 lg:py-28 bg-ink-soft border-y border-ink-line">
       <div className="absolute inset-0 bg-radial-violet-bl opacity-50" />
@@ -23,7 +27,7 @@ export default function Team({
             <p className="text-paper-dim leading-relaxed mb-6">{TEAM.body}</p>
             {showCta && (
             <Link
-              href={TEAM.cta.href}
+              href={localize(lang, TEAM.cta.href)}
               className="inline-flex items-center text-sm text-neon-300 font-semibold hover:text-neon-400 transition-colors"
             >
               {TEAM.cta.label}
@@ -62,7 +66,7 @@ export default function Team({
               <div className="grid grid-cols-4 gap-3 text-center">
                 {TEAM.stats.map((s) => (
                   <div key={s.label} className="rounded-lg bg-ink/60 border border-ink-line py-3">
-                    <div className="text-xl font-semibold text-paper">{s.value}</div>
+                    <div className="text-xl font-semibold text-paper"><bdi dir="ltr">{s.value}</bdi></div>
                     <div className="text-[10px] uppercase tracking-wider text-paper-dim mt-1">
                       {s.label}
                     </div>

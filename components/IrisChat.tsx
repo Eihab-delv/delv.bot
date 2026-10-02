@@ -3,7 +3,10 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { Send, X } from "lucide-react";
-import { IRIS } from "@/lib/constants";
+import { localize, type Lang } from "@/lib/site";
+import type { Content } from "@/lib/content";
+
+type IrisContent = Content["iris"];
 
 type Message = {
   id: number;
@@ -15,16 +18,16 @@ type Message = {
 /** Fire this from anywhere (e.g. the hero card) to open the chat. */
 export const IRIS_OPEN_EVENT = "iris:open";
 
-function replyTo(text: string): Pick<Message, "text" | "link"> {
+function replyTo(IRIS: IrisContent, text: string): Pick<Message, "text" | "link"> {
   const q = text.toLowerCase();
-  const topic = IRIS.topics.find((t) => t.keywords.some((k) => q.includes(k)));
+  const topic = IRIS.topics.find((t) => t.keywords.some((k) => q.includes(k.toLowerCase())));
   if (topic) return { text: topic.answer, link: topic.link };
   return {
     text: IRIS.cannedResponses[Math.floor(Math.random() * IRIS.cannedResponses.length)],
   };
 }
 
-export default function IrisChat() {
+export default function IrisChat({ lang, iris: IRIS }: { lang: Lang; iris: IrisContent }) {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     { id: 1, sender: "IRIS", text: IRIS.greeting },
@@ -65,11 +68,11 @@ export default function IrisChat() {
     setInput("");
     setThinking(true);
     setTimeout(() => {
-      const reply = replyTo(text);
+      const reply = replyTo(IRIS, text);
       setMessages((m) => [...m, { id: m.length + 1, sender: "IRIS", ...reply }]);
       setThinking(false);
     }, 700);
-  }, []);
+  }, [IRIS]);
 
   const close = () => {
     setOpen(false);
@@ -85,7 +88,7 @@ export default function IrisChat() {
           type="button"
           onClick={() => setOpen(true)}
           aria-label={IRIS.openLabel}
-          className="fixed bottom-6 right-6 z-50 h-14 w-14 rounded-full bg-gradient-to-br from-neon-400 to-neon-700 text-ink shadow-neon-lg flex items-center justify-center hover:scale-105 transition-transform"
+          className="fixed bottom-6 end-6 z-50 h-14 w-14 rounded-full bg-gradient-to-br from-neon-400 to-neon-700 text-ink shadow-neon-lg flex items-center justify-center hover:scale-105 transition-transform"
         >
           <span className="font-bold text-lg">I</span>
         </button>
@@ -95,8 +98,8 @@ export default function IrisChat() {
       {open && (
         <div
           role="dialog"
-          aria-label={`${IRIS.name} chat`}
-          className="fixed bottom-6 right-6 z-50 w-[calc(100vw-3rem)] sm:w-96 max-h-[80vh] rounded-2xl glass-violet shadow-neon-lg flex flex-col overflow-hidden animate-slide-up"
+          aria-label={IRIS.dialogLabel}
+          className="fixed bottom-6 end-6 z-50 w-[calc(100vw-3rem)] sm:w-96 max-h-[80vh] rounded-2xl glass-violet shadow-neon-lg flex flex-col overflow-hidden animate-slide-up"
         >
           {/* Header */}
           <div className="bg-gradient-to-br from-neon-500/30 to-neon-700/20 px-4 py-3 flex items-start gap-3 border-b border-neon-500/20">
@@ -140,18 +143,18 @@ export default function IrisChat() {
                 <div
                   className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
                     m.sender === "You"
-                      ? "bg-neon-500 text-ink rounded-br-md shadow-neon-sm"
-                      : "glass text-paper rounded-bl-md"
+                      ? "bg-neon-500 text-ink rounded-ee-md shadow-neon-sm"
+                      : "glass text-paper rounded-es-md"
                   }`}
                 >
                   {m.text}
                   {m.link && (
                     <Link
-                      href={m.link.href}
+                      href={localize(lang, m.link.href)}
                       onClick={() => setOpen(false)}
                       className="mt-2 block text-xs font-semibold text-neon-300 hover:text-neon-400"
                     >
-                      {m.link.label} →
+                      {m.link.label}
                     </Link>
                   )}
                 </div>
@@ -159,7 +162,7 @@ export default function IrisChat() {
             ))}
             {thinking && (
               <div className="flex justify-start">
-                <div className="glass rounded-2xl rounded-bl-md px-4 py-2.5 text-sm text-paper-dim italic">
+                <div className="glass rounded-2xl rounded-es-md px-4 py-2.5 text-sm text-paper-dim italic">
                   {IRIS.thinkingLabel}
                 </div>
               </div>
@@ -208,7 +211,7 @@ export default function IrisChat() {
               disabled={!input.trim() || thinking}
               className="h-9 w-9 rounded-full bg-neon-500 text-ink flex items-center justify-center disabled:opacity-40 hover:bg-neon-400 transition-colors shadow-neon-sm"
             >
-              <Send size={16} />
+              <Send size={16} className="rtl:-scale-x-100" />
             </button>
           </form>
         </div>

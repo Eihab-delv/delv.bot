@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { NEWSLETTER } from "@/lib/constants";
+import type { Content } from "@/lib/content";
 
-export default function Newsletter() {
+export default function Newsletter({ content: NEWSLETTER }: { content: Content["newsletter"] }) {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
 
@@ -22,7 +22,7 @@ export default function Newsletter() {
         <ul className="text-sm text-paper-dim mb-8 space-y-1">
           {NEWSLETTER.bullets.map((b) => (
             <li key={b}>
-              <span className="text-neon-400 mr-1">·</span>
+              <span className="text-neon-400 me-1">·</span>
               {b}
             </li>
           ))}
@@ -37,6 +37,7 @@ export default function Newsletter() {
         >
           <input
             type="email"
+            aria-label={NEWSLETTER.inputLabel}
             required
             placeholder={NEWSLETTER.inputPlaceholder}
             value={email}

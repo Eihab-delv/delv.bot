@@ -1,7 +1,9 @@
 import Link from "next/link";
-import { LIVE_LOG } from "@/lib/constants";
+import { getContent } from "@/lib/content";
+import { localize, type Lang } from "@/lib/site";
 
-export default function LiveLog({ showCta = true }: { showCta?: boolean }) {
+export default function LiveLog({ lang, showCta = true }: { lang: Lang; showCta?: boolean }) {
+  const LIVE_LOG = getContent(lang).liveLog;
   return (
     <section className="relative py-20 lg:py-28 bg-ink">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -19,7 +21,7 @@ export default function LiveLog({ showCta = true }: { showCta?: boolean }) {
               <span className="h-2.5 w-2.5 rounded-full bg-signal-err" />
               <span className="h-2.5 w-2.5 rounded-full bg-signal-warn" />
               <span className="h-2.5 w-2.5 rounded-full bg-signal-ok" />
-              <span className="ml-3 text-xs text-neon-300">{LIVE_LOG.monitorTitle}</span>
+              <span className="ms-3 text-xs text-neon-300">{LIVE_LOG.monitorTitle}</span>
             </div>
             <div className="inline-flex items-center gap-2 text-xs">
               <span className="h-2 w-2 rounded-full bg-signal-ok animate-pulse shadow-[0_0_8px_#34d399]" />
@@ -41,7 +43,7 @@ export default function LiveLog({ showCta = true }: { showCta?: boolean }) {
         {showCta && (
         <div className="mt-6">
           <Link
-            href={LIVE_LOG.cta.href}
+            href={localize(lang, LIVE_LOG.cta.href)}
             className="inline-flex items-center text-sm text-neon-300 font-semibold hover:text-neon-400 transition-colors"
           >
             {LIVE_LOG.cta.label}

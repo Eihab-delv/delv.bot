@@ -2,31 +2,31 @@
 
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { PAGES } from "@/lib/constants";
-import { DELV_GROUP, ENQUIRY_TOPICS } from "@/lib/delv-group";
+import type { Content } from "@/lib/content";
+import { LINKS } from "@/lib/site";
 
 /**
  * Contact form. GitHub Pages has no server, so submitting opens the visitor's
- * email app with a pre-filled message to DELV. Swap `onSubmit` for a form
- * service (Formspree, a Lambda, etc.) when one is chosen.
+ * email app with a pre-filled message. Swap `onSubmit` for a form service
+ * (Formspree, a Lambda, etc.) when one is chosen.
  */
-export default function ContactForm() {
-  const p = PAGES.contact;
+export default function ContactForm({ labels: p }: { labels: Content["pages"]["contact"] }) {
   const params = useSearchParams();
   const [topic, setTopic] = useState("");
   const [sent, setSent] = useState(false);
 
   useEffect(() => {
     const t = params.get("topic");
-    if (t && (ENQUIRY_TOPICS as readonly string[]).includes(t)) setTopic(t);
-  }, [params]);
+    if (t && p.topics.some((o) => o.value === t)) setTopic(t);
+  }, [params, p.topics]);
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const f = new FormData(e.currentTarget);
     const get = (k: string) => String(f.get(k) ?? "").trim();
     const name = `${get("firstName")} ${get("lastName")}`.trim();
-    const subject = `${p.subjectPrefix}: ${get("topic") || "General"} — ${name}`;
+    const topicLabel = p.topics.find((o) => o.value === get("topic"))?.label ?? "";
+    const subject = `${p.subjectPrefix}: ${topicLabel} — ${name}`;
     const body = [
       get("message"),
       "",
@@ -35,9 +35,9 @@ export default function ContactForm() {
       `${p.lastName}: ${get("lastName")}`,
       `${p.email}: ${get("email")}`,
       `${p.organisation}: ${get("organisation")}`,
-      `${p.topic} ${get("topic")}`,
+      `${p.topic} ${topicLabel}`,
     ].join("\n");
-    window.location.href = `${DELV_GROUP.emailHref}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = `${LINKS.delvEmailHref}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     setSent(true);
   };
 
@@ -52,8 +52,8 @@ export default function ContactForm() {
         <h2 className="text-2xl font-semibold text-paper mb-3">{p.sentHeading}</h2>
         <p className="text-paper-dim">
           {p.sentBody}{" "}
-          <a href={DELV_GROUP.emailHref} className="text-neon-300 hover:text-neon-400">
-            {DELV_GROUP.email}
+          <a href={LINKS.delvEmailHref} className="text-neon-300 hover:text-neon-400">
+            {LINKS.delvEmail}
           </a>
         </p>
       </div>
@@ -75,7 +75,7 @@ export default function ContactForm() {
       <div className="grid sm:grid-cols-2 gap-5">
         <div>
           <label htmlFor="email" className={label}>{p.email}</label>
-          <input id="email" name="email" type="email" required autoComplete="email" className={field} />
+          <input id="email" name="email" type="email" required autoComplete="email" dir="ltr" className={field} />
         </div>
         <div>
           <label htmlFor="organisation" className={label}>{p.organisation}</label>
@@ -93,8 +93,8 @@ export default function ContactForm() {
           className={`${field} appearance-none bg-ink-card`}
         >
           <option value="" disabled>{p.topicPlaceholder}</option>
-          {ENQUIRY_TOPICS.map((t) => (
-            <option key={t} value={t}>{t}</option>
+          {p.topics.map((t) => (
+            <option key={t.value} value={t.value}>{t.label}</option>
           ))}
         </select>
       </div>
@@ -102,10 +102,7 @@ export default function ContactForm() {
         <label htmlFor="message" className={label}>{p.message}</label>
         <textarea id="message" name="message" required rows={5} className={field} />
       </div>
-      <button
-        type="submit"
-        className="rounded-full bg-neon-500 text-ink px-6 py-3 text-sm font-semibold shadow-neon hover:bg-neon-400 transition-all"
-      >
+      <button type="submit" className="rounded-full bg-neon-500 text-ink px-6 py-3 text-sm font-semibold shadow-neon hover:bg-neon-400 transition-all">
         {p.submit}
       </button>
     </form>

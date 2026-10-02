@@ -1,15 +1,16 @@
 import SectionIntro from "./SectionIntro";
-import { PAGES } from "@/lib/constants";
-import { INDUSTRIES } from "@/lib/delv-group";
+import { getContent } from "@/lib/content";
+import type { Lang } from "@/lib/site";
 
-export default function Industries() {
-  const p = PAGES.services;
+export default function Industries({ lang }: { lang: Lang }) {
+  const c = getContent(lang);
+  const p = c.pages.services;
   return (
     <section id="industries" className="relative py-20 lg:py-24 bg-ink scroll-mt-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionIntro eyebrow={p.industriesEyebrow} heading={p.industriesHeading} body={p.industriesBody} />
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {INDUSTRIES.map((ind, i) => (
+          {c.industries.map((ind, i) => (
             <div key={ind.name} className="rounded-2xl glass p-6">
               <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-paper-dim mb-3">
                 {p.sectorLabel} · {String(i + 1).padStart(2, "0")}

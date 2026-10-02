@@ -1,16 +1,16 @@
-import { DELV_TIMELINE } from "@/lib/delv-group";
+type Item = { era: string; title: string; body: string };
 
-/** Vertical log-style timeline of DELV's evolution. */
-export default function Timeline() {
+/** Vertical log-style timeline. The last item glows green as "now". */
+export default function Timeline({ items, liveFirst = false }: { items: Item[]; liveFirst?: boolean }) {
   return (
-    <ol className="relative border-l border-neon-500/30 ml-2 space-y-8">
-      {DELV_TIMELINE.map((t, i) => {
-        const last = i === DELV_TIMELINE.length - 1;
+    <ol className="relative border-s border-neon-500/30 ms-2 space-y-8">
+      {items.map((t, i) => {
+        const live = liveFirst ? i === 0 : i === items.length - 1;
         return (
-          <li key={t.title} className="pl-8 relative">
+          <li key={t.title} className="ps-8 relative">
             <span
-              className={`absolute -left-[7px] top-1.5 h-3.5 w-3.5 rounded-full border-2 border-ink ${
-                last ? "bg-signal-ok shadow-[0_0_10px_#34d399] animate-pulse" : "bg-neon-500 shadow-[0_0_10px_rgba(168,85,247,0.7)]"
+              className={`absolute -start-[7px] top-1.5 h-3.5 w-3.5 rounded-full border-2 border-ink ${
+                live ? "bg-signal-ok shadow-[0_0_10px_#34d399] animate-pulse" : "bg-neon-500 shadow-[0_0_10px_rgba(168,85,247,0.7)]"
               }`}
             />
             <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-neon-300 mb-1">{t.era}</p>

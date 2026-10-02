@@ -1,7 +1,9 @@
 import SectionIntro from "./SectionIntro";
-import { DELV_GROUP as G } from "@/lib/delv-group";
+import { getContent } from "@/lib/content";
+import type { Lang } from "@/lib/site";
 
-export default function WhyDelv() {
+export default function WhyDelv({ lang }: { lang: Lang }) {
+  const G = getContent(lang).delv;
   return (
     <section className="py-20 lg:py-24 bg-ink">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

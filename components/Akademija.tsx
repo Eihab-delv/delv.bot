@@ -1,7 +1,9 @@
 import Link from "next/link";
-import { AKADEMIJA } from "@/lib/constants";
+import { getContent } from "@/lib/content";
+import { localize, type Lang } from "@/lib/site";
 
-export default function Akademija({ showCta = true }: { showCta?: boolean }) {
+export default function Akademija({ lang, showCta = true }: { lang: Lang; showCta?: boolean }) {
+  const AKADEMIJA = getContent(lang).akademija;
   return (
     <section className="relative py-20 lg:py-28 bg-ink">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -29,7 +31,7 @@ export default function Akademija({ showCta = true }: { showCta?: boolean }) {
         {showCta && (
         <div className="flex flex-wrap items-center gap-4">
           <Link
-            href={AKADEMIJA.cta.href}
+            href={localize(lang, AKADEMIJA.cta.href)}
             className="inline-flex items-center rounded-full bg-neon-500 text-ink px-6 py-3 text-sm font-semibold shadow-neon hover:bg-neon-400 transition-all"
           >
             {AKADEMIJA.cta.label}

@@ -1,11 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
-import { HERO, CEO, IRIS } from "@/lib/constants";
+import { getContent } from "@/lib/content";
+import { IMAGES, localize, type Lang } from "@/lib/site";
 import CodeRain from "./CodeRain";
 import HeroRobot from "./HeroRobot";
 import OpenIrisButton from "./OpenIrisButton";
 
-export default function Hero() {
+export default function Hero({ lang }: { lang: Lang }) {
+  const c = getContent(lang);
+  const HERO = c.hero;
+  const IRIS = c.iris;
   return (
     <section className="relative overflow-hidden bg-ink">
       {/* Backdrop layers */}
@@ -25,10 +29,10 @@ export default function Hero() {
               {HERO.eyebrow}
             </p>
             <h1 className="display-heading text-5xl sm:text-6xl lg:text-7xl font-semibold text-paper mb-8">
-              {HERO.headingLine1} <br />
-              {HERO.headingLine2} <br />
-              <span className="bg-gradient-to-r from-neon-400 via-neon-300 to-neon-500 bg-clip-text text-transparent">
-                {HERO.headingLine3}
+              {HERO.line1} <br />
+              {HERO.line2} <br />
+              <span className="bg-gradient-to-r rtl:bg-gradient-to-l from-neon-400 via-neon-300 to-neon-500 bg-clip-text text-transparent">
+                {HERO.line3}
               </span>
             </h1>
             <p className="text-paper-dim text-base sm:text-lg leading-relaxed mb-6 max-w-xl">
@@ -38,26 +42,24 @@ export default function Hero() {
 
             <div className="flex flex-wrap gap-3">
               <Link
-                href={HERO.ctaPrimary.href}
+                href={localize(lang, HERO.ctaPrimary.href)}
                 className="inline-flex items-center rounded-full bg-neon-500 text-ink px-6 py-3 text-sm font-semibold shadow-neon hover:bg-neon-400 transition-all"
               >
                 {HERO.ctaPrimary.label}
               </Link>
-              <a
-                href={HERO.ctaSecondary.href}
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                href={localize(lang, HERO.ctaSecondary.href)}
                 className="inline-flex items-center rounded-full glass text-paper px-6 py-3 text-sm font-medium glow-border transition-all"
               >
                 {HERO.ctaSecondary.label}
-              </a>
+              </Link>
             </div>
 
             {/* Stats row */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 mt-12 pt-8 border-t border-ink-line">
               {HERO.stats.map((s) => (
                 <div key={s.label}>
-                  <div className="text-3xl font-semibold text-paper">{s.value}</div>
+                  <div className="text-3xl font-semibold text-paper"><bdi dir="ltr">{s.value}</bdi></div>
                   <div className="text-[10px] uppercase tracking-[0.2em] text-paper-dim mt-1">
                     {s.label}
                   </div>
@@ -67,7 +69,7 @@ export default function Hero() {
           </div>
 
           {/* Right: layered scene with robot, portrait, floating cards */}
-          <div className="relative h-[560px] lg:h-[640px]">
+          <div dir="ltr" className="relative h-[560px] lg:h-[640px]">
             {/* Glow blob behind robot */}
             <div className="absolute top-10 left-1/2 -translate-x-1/2 h-[420px] w-[420px] rounded-full bg-neon-500/20 blur-3xl" />
 
@@ -78,8 +80,8 @@ export default function Hero() {
             <div className="absolute top-4 left-0 sm:left-2 lg:-left-2 w-[230px] glass-violet rounded-2xl p-3 shadow-neon z-20">
               <div className="relative aspect-[4/5] rounded-xl overflow-hidden ring-1 ring-neon-500/20">
                 <Image
-                  src={CEO.photoUrl}
-                  alt={CEO.fullName}
+                  src={IMAGES.founderCard}
+                  alt="Sam Smair"
                   fill
                   sizes="240px"
                   className="object-cover"
@@ -88,13 +90,13 @@ export default function Hero() {
               </div>
               <div className="flex items-center gap-2 mt-3 px-1">
                 <div className="h-8 w-8 rounded-full bg-gradient-to-br from-neon-400 to-neon-700 flex items-center justify-center text-[10px] font-bold text-ink">
-                  {CEO.initials}
+                  SS
                 </div>
                 <div className="min-w-0">
                   <div className="text-sm font-semibold text-paper truncate">
-                    {CEO.fullName}
+                    Sam Smair
                   </div>
-                  <div className="text-[10px] text-paper-dim">{CEO.title}</div>
+                  <div className="text-[10px] text-paper-dim">{HERO.founderTitle}</div>
                 </div>
               </div>
             </div>
@@ -102,7 +104,7 @@ export default function Hero() {
             {/* "Protected by IRIS" status — top-right */}
             <div className="absolute top-2 right-0 sm:right-2 glass-violet rounded-full px-4 py-2 flex items-center gap-2 z-20 shadow-neon-sm">
               <span className="text-[10px] uppercase tracking-[0.2em] text-paper-dim">
-                protected by
+                {HERO.protectedBy}
               </span>
               <span className="text-xs font-semibold text-neon-300 neon-text">IRIS</span>
             </div>
@@ -119,7 +121,7 @@ export default function Hero() {
                     {IRIS.badge}
                   </span>
                 </div>
-                <div className="text-[10px] text-paper-dim">{IRIS.role}</div>
+                <div className="text-[10px] text-paper-dim">{HERO.irisRole}</div>
               </div>
               <span className="ml-2 h-2 w-2 rounded-full bg-signal-ok animate-pulse shadow-[0_0_8px_#34d399]" />
             </div>
@@ -128,7 +130,7 @@ export default function Hero() {
             <div className="absolute top-44 left-6 lg:left-0 glass-violet rounded-full px-3 py-1.5 flex items-center gap-2 z-20">
               <span className="h-2 w-2 rounded-full bg-neon-400 animate-pulse" />
               <span className="text-[11px] font-medium text-paper">
-                {HERO.shieldStatus.irisStatus}
+                {HERO.shielding}
               </span>
             </div>
 
@@ -136,18 +138,18 @@ export default function Hero() {
             <div className="absolute bottom-44 left-2 lg:-left-4 glass rounded-full px-3 py-1.5 flex items-center gap-2 z-20">
               <span className="h-1.5 w-1.5 rounded-full bg-neon-500" />
               <span className="text-[11px] font-medium text-paper">
-                {HERO.shieldStatus.companies}
+                {HERO.pill}
               </span>
             </div>
 
             {/* Chat with me card — bottom right */}
-            <OpenIrisButton className="absolute bottom-4 right-0 sm:right-2 w-[240px] glass-violet rounded-2xl p-4 z-20 shadow-neon text-left glow-border transition-all">
-              <p className="text-sm text-paper leading-snug mb-3">{IRIS.tagline}</p>
-              <span className="flex items-center justify-between">
+            <OpenIrisButton className="absolute bottom-4 right-0 sm:right-2 w-[240px] glass-violet rounded-2xl p-4 z-20 shadow-neon text-start glow-border transition-all">
+              <p dir={lang === "ar" ? "rtl" : "ltr"} className="text-sm text-paper leading-snug mb-3 text-start">{IRIS.tagline}</p>
+              <span dir={lang === "ar" ? "rtl" : "ltr"} className="flex items-center justify-between">
                 <span className="text-xs font-semibold text-neon-300 neon-text">
                   {IRIS.chatPrompt}
                 </span>
-                <span className="text-neon-300 text-lg leading-none">→</span>
+                <span className="text-neon-300 text-lg leading-none">{c.common.arrow}</span>
               </span>
             </OpenIrisButton>
 
@@ -155,7 +157,7 @@ export default function Hero() {
             <div className="absolute bottom-0 left-1/2 -translate-x-1/2 z-20">
               <div className="glass rounded-full px-4 py-1.5 flex items-center gap-2 text-[10px] uppercase tracking-[0.25em] text-paper-dim">
                 <span className="h-1.5 w-1.5 rounded-full bg-signal-ok animate-pulse" />
-                {HERO.shieldStatus.protected}
+                {HERO.protectedBadge}
               </div>
             </div>
           </div>
