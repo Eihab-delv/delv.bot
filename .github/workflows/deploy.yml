@@ -31,10 +31,19 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
+      # GitHub Pages serves a project site at /<repo-name>, so take the base
+      # path from the repo's own name. This keeps working if the repo is
+      # renamed (delv.bot -> nashmi.bot) without touching this file.
+      - name: Work out site address
+        run: |
+          REPO="${GITHUB_REPOSITORY#*/}"
+          OWNER="${GITHUB_REPOSITORY_OWNER,,}"
+          echo "NEXT_PUBLIC_BASE_PATH=/$REPO" >> "$GITHUB_ENV"
+          echo "NEXT_PUBLIC_SITE_URL=https://$OWNER.github.io/$REPO" >> "$GITHUB_ENV"
+          echo "Building for https://$OWNER.github.io/$REPO/"
+
       - name: Build static export
         run: yarn build
-        env:
-          NEXT_PUBLIC_BASE_PATH: /nashmi.bot
         # next build with output:export writes to ./out
 
       - name: Upload Pages artifact
