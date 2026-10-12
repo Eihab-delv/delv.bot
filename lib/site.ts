@@ -67,8 +67,8 @@ export const LINKS = {
 const img = (path: string) => `${BASE}${path}`;
 
 export const IMAGES = {
-  founderCard: img("/sam-profile.png"),
-  founderAbout: img("/sam-hero.jpeg"),
+  founderCard: img("/sam-profile.webp"),
+  founderAbout: img("/sam-hero.webp"),
   delvLogo: { src: img("/brand/delv-logo-light.png"), width: 1446, height: 299 },
   delvMark: { src: img("/brand/delv-mark-light.png"), width: 592, height: 300 },
   delvHero: img("/delv-group/about-hero.jpg"),
