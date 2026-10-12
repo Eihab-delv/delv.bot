@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 
-// GitHub Pages serves this repo at /<repo-name>; the deploy workflow sets
-// NEXT_PUBLIC_BASE_PATH from the repo name. Locally (yarn dev / yarn build) it's empty,
+// The deploy workflow sets NEXT_PUBLIC_BASE_PATH: empty on a custom domain
+// (nashmi.bot), or /<repo-name> on <owner>.github.io. Locally it's empty too,
 // so the site runs at the root: http://localhost:3000/
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
